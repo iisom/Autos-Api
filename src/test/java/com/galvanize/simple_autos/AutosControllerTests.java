@@ -51,7 +51,7 @@ public class AutosControllerTests {
     @Test
     void getAutosTestNoAutosInDatabase() throws Exception {
         List<Automobiles> automobiles= new ArrayList<>();
-        when(autosService.getAutos()).thenReturn();
+        when(autosService.getAutos()).thenReturn(new AutoList(automobiles));
             mockMvc.perform(get("/api/autos"))
                     .andDo(print())
                     .andExpect(status().isNoContent());

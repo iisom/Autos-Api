@@ -10,6 +10,6 @@ public class AutosService {
 
 
     public AutoList getAutos(){
-               return AutoList;
+               return null;
     }
 }
