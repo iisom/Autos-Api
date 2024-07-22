@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -56,6 +58,38 @@ public class AutosControllerTests {
                     .andDo(print())
                     .andExpect(status().isNoContent());
         }
+
+//    @Test
+//    void getAutosColorTest() throws Exception {
+//        List<Automobiles> automobiles= new ArrayList<>();
+//        for (int i=0; i<5; i++){
+//            automobiles.add(new Automobiles(1999+i, "Ford", "Bronco",  "ASDD"+i ));}
+//when(autosService.getAutos(anyString(), isNull())).thenReturn(new AutoList(automobiles));
+//        mockMvc.perform(get("/api/autos?color=RED"))
+//                .andDo(print())
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.color", automobiles.contains("red"));
+//        }
+
+    @Test
+    void getAutosColorAndMakeTest() throws Exception {
+        List<Automobiles> automobiles= new ArrayList<>();
+     for (int i=0; i<5; i++){
+        automobiles.add(new Automobiles(1999+i, "Ford", "Bronco",  "ASDD"+i ));}
+        when(autosService.getAutos(anyString(), anyString())).thenReturn(new AutoList(automobiles));
+        mockMvc.perform(get("/api/autos?make=Ford&color=RED"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.automobiles", hasSize(5)));
+    }
+
+
+
+
+
+
+
+    }
 //-Post:/api/autos Adds an automobile
 // -Post:/api/autos returns error message due to bad request (400)
 
@@ -67,4 +101,4 @@ public class AutosControllerTests {
 // -Delete:/api/autos/{vin}   Returns 204, vehicle not found
 
 
-}
+

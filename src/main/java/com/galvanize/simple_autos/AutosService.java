@@ -2,7 +2,6 @@ package com.galvanize.simple_autos;
 
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Service
 public class AutosService {
@@ -11,5 +10,9 @@ public class AutosService {
 
     public AutoList getAutos(){
                return null;
+    }
+
+    public AutoList getAutos(String color, String make){
+        return null;
     }
 }
