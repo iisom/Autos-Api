@@ -1,7 +1,34 @@
 package com.galvanize.simple_autos;
 
+
+import org.junit.jupiter.api.Test;
+import org.mockito.internal.hamcrest.HamcrestArgumentMatcher;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
+
+@WebMvcTest(AutosController.class)
 public class AutosControllerTests {
 
+    @Autowired
+    MockMvc mockMvc;
+
+    @MockBean
+    AutosService autosService;//mocking the service
 //-Get:/api/autos Searches for autos
 // Get:/api/autos no autos in db returns 204 no content
 // Get:/api/autos?color=RED Returns red cars
@@ -9,6 +36,26 @@ public class AutosControllerTests {
 // Get:/api/autos?make=Ford&color=RED Returns red Ford cars
 //-Get:/api/autos/{vin} Finds an automobile by its vin
 
+    @Test
+    void getAllAutosTest() throws Exception {
+        List<Automobiles> automobiles= new ArrayList<>();
+        for (int i=0; i<5; i++){
+            automobiles.add(new Automobiles(1999+i, "Ford", "Bronco",  "ASDD"+i ));}
+        when(autosService.getAutos()).thenReturn(new AutoList(automobiles));
+        mockMvc.perform(get("/api/autos"))
+                .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.automobiles", hasSize(5)));
+    }
+
+    @Test
+    void getAutosTestNoAutosInDatabase() throws Exception {
+        List<Automobiles> automobiles= new ArrayList<>();
+        when(autosService.getAutos()).thenReturn();
+            mockMvc.perform(get("/api/autos"))
+                    .andDo(print())
+                    .andExpect(status().isNoContent());
+        }
 //-Post:/api/autos Adds an automobile
 // -Post:/api/autos returns error message due to bad request (400)
 
