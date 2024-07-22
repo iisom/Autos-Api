@@ -59,17 +59,17 @@ public class AutosControllerTests {
                     .andExpect(status().isNoContent());
         }
 
-//    @Test
-//    void getAutosColorTest() throws Exception {
-//        List<Automobiles> automobiles= new ArrayList<>();
-//        for (int i=0; i<5; i++){
-//            automobiles.add(new Automobiles(1999+i, "Ford", "Bronco",  "ASDD"+i ));}
-//when(autosService.getAutos(anyString(), isNull())).thenReturn(new AutoList(automobiles));
-//        mockMvc.perform(get("/api/autos?color=RED"))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.color", automobiles.contains("red"));
-//        }
+    @Test
+    void getAutosColorTest() throws Exception {
+        List<Automobiles> automobiles= new ArrayList<>();
+        for (int i=0; i<5; i++){
+            automobiles.add(new Automobiles(1999+i, "Ford", "Bronco",  "ASDD"+i ));}
+when(autosService.getAutos(anyString(), isNull())).thenReturn(new AutoList(automobiles));
+        mockMvc.perform(get("/api/autos?color=RED"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.automobiles", hasSize(5)));
+        }
 
     @Test
     void getAutosColorAndMakeTest() throws Exception {
