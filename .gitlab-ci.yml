@@ -4,32 +4,18 @@ image: eclipse-temurin:17-alpine
 stages:
   - build
   - test
-
-
+  
 build:
   stage: build
   script:
-      - ./gradlew assemble
-  cache:
-    key: GRADLE-BUILD-FILES
-    paths:
-      - build/
+    - ./gradlew assemble
   artifacts:
-    untracked: false
-    when: on_success
-    access: all
     paths:
       - build/libs/*.jar
-
-
 test:
   stage: test
   script:
-       - ./gradlew test
-  cache:
-    key: GRADLE-BUILD-FILES
-    paths:
-      - build/
+    ./gradlew test
   artifacts:
     paths:
       - build/test-results/test/TEST*.xml
