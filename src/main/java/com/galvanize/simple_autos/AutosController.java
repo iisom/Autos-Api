@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.web.servlet.function.ServerResponse.notFound;
+
 
 
 @RestController
@@ -75,17 +75,3 @@ public class AutosController {
 
 }
 
-//    @PatchMapping("/api/autos")
-//    public ResponseEntity<Automobiles> updatesOwnerAndColorNotFound_returnsNoContent(@PathVariable String vin, @RequestBody UpdateOwnerRequest update) {
-//        if (autoList == null) {
-//            return ResponseEntity.noContent().build();
-//        }
-//        Automobiles updatedAuto = autosService.updateAuto(vin, update);
-//
-//        if (updatedAuto == null) {
-//            return ResponseEntity.notFound().build(); // Return 404 Not Found if automobile with given VIN is not found
-//        }
-//
-//        return ResponseEntity.ok(updatedAuto); // Return 200 OK with updated automobile object
-//    }
-//
