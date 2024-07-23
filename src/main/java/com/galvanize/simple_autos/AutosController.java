@@ -24,7 +24,7 @@ public AutosController(AutosService autosService) {
 
 
     @GetMapping("/api/autos")
-    public ResponseEntity <AutoList> getAutos(@RequestParam(required =false) String color, @RequestParam(required =false)String make) {
+    public ResponseEntity <AutoList> getAutos(@RequestParam(defaultValue = "BLUE") String color, @RequestParam(required =false) String make) {
    AutoList autoList;
     if (color.isEmpty() && make.isEmpty()){
          autoList =autosService.getAutos();

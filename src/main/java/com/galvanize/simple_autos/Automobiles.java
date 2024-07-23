@@ -18,6 +18,7 @@ public class Automobiles {
         this.year = year;
         this.make = make;
         this.model = model;
+        this.color = color;
         this.vin = vin;
     }
 
