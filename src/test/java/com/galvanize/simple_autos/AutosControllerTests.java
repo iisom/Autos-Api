@@ -13,10 +13,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.function.Predicate.isEqual;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -88,7 +86,7 @@ when(autosService.getAutos(anyString(), isNull())).thenReturn(new AutoList(autom
         List<Automobiles> automobiles= new ArrayList<>();
         for (int i=0; i<5; i++){
         automobiles.add(new Automobiles(1999+i, "Ford", "Bronco", "ASDD"+i ));}
-        when(autosService.getAutos(anyString(), anyString())).thenReturn(new AutoList(automobiles));
+        when(autosService.getAutos(isNull(), anyString())).thenReturn(new AutoList(automobiles));
         mockMvc.perform(get("/api/autos?make=Ford"))
                 .andDo(print())
                 .andExpect(status().isOk())
