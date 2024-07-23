@@ -1,11 +1,13 @@
 package com.galvanize.simple_autos;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.hamcrest.HamcrestArgumentMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -29,6 +31,10 @@ public class AutosControllerTests {
 
     @MockBean
     AutosService autosService;//mocking the service
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private String convertObjectToJson(Object object) throws Exception {
+        return objectMapper.writeValueAsString(object);
+    }
 //-Get:/api/autos Searches for autos
 // Get:/api/autos no autos in db returns 204 no content
 // Get:/api/autos?color=RED Returns red cars
@@ -97,7 +103,6 @@ public class AutosControllerTests {
                 .andExpect(jsonPath("$.automobiles", hasSize(5)));
     }
 
-
     @Test
     void getAutosByVinTest() throws Exception {
         List<Automobiles> automobiles = new ArrayList<>();
@@ -110,6 +115,24 @@ public class AutosControllerTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.automobiles", hasSize(5)));
+    }
+
+    @Test
+    void addsAutosTest() throws Exception {
+        Automobiles automobile = new Automobiles(2025, "Ford", "Bronco", "ASDD");
+        String json= convertObjectToJson(automobile);
+        when(autosService.addAuto(any(Automobiles.class))).thenReturn(automobile);
+        mockMvc.perform(post("/api/autos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("make").value("Ford"));
+    }
+
+    @Test
+    void returnsErrorBadRequestTest() throws Exception {
+        mockMvc.perform(get("/api/autos"))
     }
 //-Post:/api/autos Adds an automobile
 // -Post:/api/autos returns error message due to bad request (400)

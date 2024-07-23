@@ -22,4 +22,12 @@ public class AutosService {
     public AutoList getAutosByVin(String vin){
         return null;
     }
+
+    public Automobiles addAuto() {
+        return null;
+    }
+
+    public Automobiles addAuto(Automobiles auto) {
+        return null;
+    }
 }

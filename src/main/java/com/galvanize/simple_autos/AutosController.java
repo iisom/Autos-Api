@@ -5,8 +5,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.apache.logging.log4j.ThreadContext.isEmpty;
-
 
 @RestController
 public class AutosController {
@@ -37,6 +35,14 @@ public AutosController(AutosService autosService) {
         AutoList autoList = autosService.getAutosByVin(vin);
 
         return autoList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(autoList);
+    }
+
+    @PostMapping("/api/autos")
+    public ResponseEntity<Automobiles> addAuto(@RequestBody Automobiles auto) {
+        if (auto == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(autosService.addAuto(auto));
     }
 
     }
