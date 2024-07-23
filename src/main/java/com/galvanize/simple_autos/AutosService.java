@@ -9,10 +9,17 @@ public class AutosService {
 
 
     public AutoList getAutos(){
-               return null;
+        return null;
     }
 
     public AutoList getAutos(String color, String make){
+        return null;
+    }
+
+    public AutoList getAutosVin(){
+        return null;
+    }
+    public AutoList getAutosVin(String vin){
         return null;
     }
 }

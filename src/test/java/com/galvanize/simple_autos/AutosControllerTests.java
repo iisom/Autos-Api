@@ -38,42 +38,45 @@ public class AutosControllerTests {
 
     @Test
     void getAllAutosTest() throws Exception {
-        List<Automobiles> automobiles= new ArrayList<>();
-        for (int i=0; i<5; i++){
-            automobiles.add(new Automobiles(1999+i, "Ford", "Bronco",  "ASDD"+i ));}
+        List<Automobiles> automobiles = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            automobiles.add(new Automobiles(1999 + i, "Ford", "Bronco", "ASDD" + i));
+        }
         when(autosService.getAutos()).thenReturn(new AutoList(automobiles));
         mockMvc.perform(get("/api/autos"))
                 .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.automobiles", hasSize(5)));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.automobiles", hasSize(5)));
     }
 
     @Test
     void getAutosTestNoAutosInDatabase() throws Exception {
-        List<Automobiles> automobiles= new ArrayList<>();
+        List<Automobiles> automobiles = new ArrayList<>();
         when(autosService.getAutos()).thenReturn(new AutoList(automobiles));
-            mockMvc.perform(get("/api/autos"))
-                    .andDo(print())
-                    .andExpect(status().isNoContent());
-        }
+        mockMvc.perform(get("/api/autos"))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
 
     @Test
     void getAutosColorTest() throws Exception {
-        List<Automobiles> automobiles= new ArrayList<>();
-        for (int i=0; i<5; i++){
-            automobiles.add(new Automobiles(1999+i, "Ford", "Bronco",  "ASDD"+i ));}
-when(autosService.getAutos(anyString(), isNull())).thenReturn(new AutoList(automobiles));
+        List<Automobiles> automobiles = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            automobiles.add(new Automobiles(1999 + i, "Ford", "Bronco", "ASDD" + i));
+        }
+        when(autosService.getAutos(anyString(), isNull())).thenReturn(new AutoList(automobiles));
         mockMvc.perform(get("/api/autos?color=RED"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.automobiles", hasSize(5)));
-        }
+    }
 
     @Test
     void getAutosColorAndMakeTest() throws Exception {
-        List<Automobiles> automobiles= new ArrayList<>();
-     for (int i=0; i<5; i++){
-        automobiles.add(new Automobiles(1999+i, "Ford", "Bronco",  "ASDD"+i ));}
+        List<Automobiles> automobiles = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            automobiles.add(new Automobiles(1999 + i, "Ford", "Bronco", "ASDD" + i));
+        }
         when(autosService.getAutos(anyString(), anyString())).thenReturn(new AutoList(automobiles));
         mockMvc.perform(get("/api/autos?make=Ford&color=RED"))
                 .andDo(print())
@@ -83,9 +86,10 @@ when(autosService.getAutos(anyString(), isNull())).thenReturn(new AutoList(autom
 
     @Test
     void getAutosMakeTest() throws Exception {
-        List<Automobiles> automobiles= new ArrayList<>();
-        for (int i=0; i<5; i++){
-        automobiles.add(new Automobiles(1999+i, "Ford", "Bronco", "ASDD"+i ));}
+        List<Automobiles> automobiles = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            automobiles.add(new Automobiles(1999 + i, "Ford", "Bronco", "ASDD" + i));
+        }
         when(autosService.getAutos(isNull(), anyString())).thenReturn(new AutoList(automobiles));
         mockMvc.perform(get("/api/autos?make=Ford"))
                 .andDo(print())
@@ -94,9 +98,18 @@ when(autosService.getAutos(anyString(), isNull())).thenReturn(new AutoList(autom
     }
 
 
-
-
-
+    @Test
+    void getAutosVinTest() throws Exception {
+        List<Automobiles> automobiles = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            automobiles.add(new Automobiles(1999 + i, "Ford", "Bronco", "ASDD" + i));
+        }
+        String vin = "ASDD1";
+        when(autosService.getAutosVin(anyString())).thenReturn(new AutoList(automobiles));
+        mockMvc.perform(get("/api/autos/{vin}",vin))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.automobiles", hasSize(5)));
     }
 //-Post:/api/autos Adds an automobile
 // -Post:/api/autos returns error message due to bad request (400)
@@ -109,4 +122,4 @@ when(autosService.getAutos(anyString(), isNull())).thenReturn(new AutoList(autom
 // -Delete:/api/autos/{vin}   Returns 204, vehicle not found
 
 
-
+}

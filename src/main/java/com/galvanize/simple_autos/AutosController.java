@@ -1,10 +1,7 @@
 package com.galvanize.simple_autos;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,7 +21,7 @@ public AutosController(AutosService autosService) {
 
 
     @GetMapping("/api/autos")
-    public ResponseEntity <AutoList> getAutos(@RequestParam(required =false) String color, @RequestParam(required =false) String make) {
+    public ResponseEntity <AutoList> getAutos(@RequestParam(required =false) String color, @RequestParam(required =false) String make){
    AutoList autoList;
     if (color== null && make == null){
          autoList =autosService.getAutos();
@@ -34,4 +31,12 @@ public AutosController(AutosService autosService) {
         return autoList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(autoList);
     }
 
-}
+
+    @GetMapping("/api/autos/{vin}")
+    public ResponseEntity<AutoList> getAutosVin(@PathVariable(required = false) String vin) {
+        AutoList autoList = autosService.getAutosVin(vin);
+
+        return autoList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(autoList);
+    }
+
+    }
