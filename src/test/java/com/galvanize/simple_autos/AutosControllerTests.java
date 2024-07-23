@@ -132,7 +132,11 @@ public class AutosControllerTests {
 
     @Test
     void returnsErrorBadRequestTest() throws Exception {
-        mockMvc.perform(get("/api/autos"))
+        when(autosService.addAuto(null)).thenReturn(null);
+        mockMvc.perform(post("/api/autos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(convertObjectToJson(null)))
+                .andExpect(status().isBadRequest());
     }
 //-Post:/api/autos Adds an automobile
 // -Post:/api/autos returns error message due to bad request (400)
