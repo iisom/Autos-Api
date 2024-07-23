@@ -141,6 +141,18 @@ public class AutosControllerTests {
 //-Post:/api/autos Adds an automobile
 // -Post:/api/autos returns error message due to bad request (400)
 
+    @Test
+    void updatesOwnerAndColorTest() throws Exception {
+        Automobiles automobiles = new Automobiles(2025, "Ford", "Bronco", "ASDD");
+        when(autosService.updateAuto(anyString(), anyString(),anyString())).thenReturn(automobiles);
+        mockMvc.perform(patch("/api/autos/" + automobiles.getVin())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content( "{\"color\": \"BLACK\",\"owner\":\"Max\"}"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("color").value("BLACK"))
+                .andExpect(jsonPath("owner").value("Max"));
+    }
 //-Patch:/api/autos/{vin}  Updates owner, or color of vehicle
 // -Patch:/api/autos/{vin}  Returns NoContent auto not found
 // -Patch:/api/autos/{vin}  Returns 400 bad request (no payload, no changes or already done)

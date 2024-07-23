@@ -33,7 +33,6 @@ public AutosController(AutosService autosService) {
     @GetMapping("/api/autos/{vin}")
     public ResponseEntity<AutoList> getAutosByVin(@PathVariable(required = false) String vin) {
         AutoList autoList = autosService.getAutosByVin(vin);
-
         return autoList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(autoList);
     }
 
@@ -45,4 +44,16 @@ public AutosController(AutosService autosService) {
         return ResponseEntity.ok(autosService.addAuto(auto));
     }
 
+    @PatchMapping("/api/autos/{vin}")
+    public Automobiles updatesOwnerAndColor(@PathVariable String vin, @RequestBody UpdateOwnerRequest update) {
+
+        Automobiles automobiles = autosService.updateAuto(vin, update.getColor(), update.getOwner());
+        automobiles.setOwner(update.getOwner());
+        automobiles.setColor(update.getColor());
+
+        return automobiles;
     }
+
+
+
+}

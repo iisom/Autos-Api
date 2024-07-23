@@ -30,4 +30,8 @@ public class AutosService {
     public Automobiles addAuto(Automobiles auto) {
         return null;
     }
+
+    public Automobiles updateAuto(String vin, String color, String owner) {
+        return null;
+    }
 }
