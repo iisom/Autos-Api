@@ -48,13 +48,13 @@ public class AutosController {
     @PatchMapping("/api/autos/{vin}")
     public ResponseEntity<Automobiles> updatesOwnerAndColor(@PathVariable String vin, @RequestBody UpdateOwnerRequest update) {
         if ((vin == null)) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.badRequest().build();
         }
         try {
             Automobiles updatedAuto = autosService.updateAuto(vin, update);
 
             if (updatedAuto == null) {
-                return ResponseEntity.notFound().build(); // Return 404 Not Found if automobile with given VIN is not found
+                return ResponseEntity.noContent().build(); // Return 404 Not Found if automobile with given VIN is not found
             }
 
             return ResponseEntity.ok(updatedAuto); // Return 200 OK with updated automobile object
