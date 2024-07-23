@@ -31,7 +31,11 @@ public class AutosService {
         return null;
     }
 
-    public Automobiles updateAuto(String vin, String color, String owner) {
+    public Automobiles updateAuto(String vin, UpdateOwnerRequest update) {
+        return null;
+    }
+
+    public Automobiles deleteAuto(String vin) {
         return null;
     }
 }

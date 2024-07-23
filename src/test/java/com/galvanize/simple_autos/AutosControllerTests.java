@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -143,9 +144,11 @@ public class AutosControllerTests {
 
     @Test
     void updatesOwnerAndColorTest() throws Exception {
-        Automobiles automobiles = new Automobiles(2025, "Ford", "Bronco", "ASDD");
-        when(autosService.updateAuto(anyString(), anyString(),anyString())).thenReturn(automobiles);
-        mockMvc.perform(patch("/api/autos/" + automobiles.getVin())
+        Automobiles updatedAuto  = new Automobiles(2025, "Ford", "Bronco", "ASDD");
+        when(autosService.updateAuto(anyString(), any(UpdateOwnerRequest.class))).thenReturn(updatedAuto );
+        updatedAuto .setColor("BLACK");
+        updatedAuto .setOwner("Max");
+        mockMvc.perform(patch("/api/autos/ASDD" )
                 .contentType(MediaType.APPLICATION_JSON)
                 .content( "{\"color\": \"BLACK\",\"owner\":\"Max\"}"))
                 .andDo(print())
@@ -156,9 +159,25 @@ public class AutosControllerTests {
 //-Patch:/api/autos/{vin}  Updates owner, or color of vehicle
 // -Patch:/api/autos/{vin}  Returns NoContent auto not found
 // -Patch:/api/autos/{vin}  Returns 400 bad request (no payload, no changes or already done)
+    @Test
+    void updateAuto_notFound_returnsNoContent() throws Exception {
+    when(autosService.updateAuto(anyString(), any(UpdateOwnerRequest.class)))
+            .thenThrow(new AutoNotFoundException("Auto not found"));
+    mockMvc.perform(patch("/api/autos/AABBCC")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"color\":\"RED\", \"owner\":\"Max\"}"))
+            .andDo(print())
+            .andExpect(status().isNoContent());
+}
 
 //-Delete:/api/autos/{vin}   Deletes an automobile by its vin/returns 202
 // -Delete:/api/autos/{vin}   Returns 204, vehicle not found
 
-
+    @Test
+    void deleteAuto_withVin_exists_Returns202() throws Exception {
+        mockMvc.perform(delete("/api/autos/AABBCC"))
+                .andDo(print())
+                .andExpect(status().isAccepted());
+        verify(autosService).deleteAuto(anyString());
+    }
 }
