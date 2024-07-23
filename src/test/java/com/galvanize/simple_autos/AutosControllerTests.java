@@ -17,8 +17,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -162,7 +161,7 @@ public class AutosControllerTests {
     @Test
     void updateAuto_notFound_returnsNoContent() throws Exception {
     when(autosService.updateAuto(anyString(), any(UpdateOwnerRequest.class)))
-            .thenThrow(new AutoNotFoundException("Auto not found"));
+            .thenThrow(new AutoNotFoundException());
     mockMvc.perform(patch("/api/autos/AABBCC")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("{\"color\":\"RED\", \"owner\":\"Max\"}"))
@@ -180,4 +179,13 @@ public class AutosControllerTests {
                 .andExpect(status().isAccepted());
         verify(autosService).deleteAuto(anyString());
     }
+
+    @Test
+    void deleteAuto_withVin_notexists_returnsNoContent() throws Exception {
+        doThrow(new AutoNotFoundException()).when(autosService).deleteAuto(anyString());
+        mockMvc.perform(delete("/api/autos/AABBCC"))
+            .andDo(print())
+            .andExpect(status().isNoContent());
+        verify(autosService).deleteAuto(anyString());
+}
 }
