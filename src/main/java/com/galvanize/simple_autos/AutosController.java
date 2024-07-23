@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.web.servlet.function.ServerResponse.notFound;
+
 
 @RestController
 public class AutosController {
@@ -45,17 +47,33 @@ public class AutosController {
 
     @PatchMapping("/api/autos/{vin}")
     public ResponseEntity<Automobiles> updatesOwnerAndColor(@PathVariable String vin, @RequestBody UpdateOwnerRequest update) {
-        if ((vin == null) ) {
+        if ((vin == null)) {
             return ResponseEntity.noContent().build();
         }
-        Automobiles updatedAuto = autosService.updateAuto(vin, update);
+        try {
+            Automobiles updatedAuto = autosService.updateAuto(vin, update);
 
-        if (updatedAuto == null) {
-            return ResponseEntity.noContent().build(); // Return 404 Not Found if automobile with given VIN is not found
+            if (updatedAuto == null) {
+                return ResponseEntity.notFound().build(); // Return 404 Not Found if automobile with given VIN is not found
+            }
+
+            return ResponseEntity.ok(updatedAuto); // Return 200 OK with updated automobile object
+        } catch (AutoNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }}
+
+        @DeleteMapping("/api/autos/{vin}")
+        public ResponseEntity deleteAuto (@PathVariable String vin){
+            try {
+                autosService.deleteAuto(vin);
+            } catch (Exception e) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.accepted().build();
         }
 
-        return ResponseEntity.ok(updatedAuto); // Return 200 OK with updated automobile object
-    }
+
+}
 
 //    @PatchMapping("/api/autos")
 //    public ResponseEntity<Automobiles> updatesOwnerAndColorNotFound_returnsNoContent(@PathVariable String vin, @RequestBody UpdateOwnerRequest update) {
@@ -70,15 +88,4 @@ public class AutosController {
 //
 //        return ResponseEntity.ok(updatedAuto); // Return 200 OK with updated automobile object
 //    }
-      @DeleteMapping("/api/autos/{vin}")
-    public ResponseEntity deleteAuto(@PathVariable String vin){
-        try {
-            autosService.deleteAuto(vin);
-        } catch (Exception e) {
-            return ResponseEntity.noContent().build();
-        }
-    return ResponseEntity.accepted().build();
-}
-
-}
-
+//

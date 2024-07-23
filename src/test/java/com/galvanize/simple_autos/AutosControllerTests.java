@@ -159,16 +159,15 @@ public class AutosControllerTests {
 // -Patch:/api/autos/{vin}  Returns NoContent auto not found
 // -Patch:/api/autos/{vin}  Returns 400 bad request (no payload, no changes or already done)
     @Test
-    void updateAuto_notFound_returnsNoContent() throws Exception {
-    when(autosService.updateAuto(anyString(), any(UpdateOwnerRequest.class)))
-            .thenThrow(new AutoNotFoundException());
-    mockMvc.perform(patch("/api/autos/AABBCC")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("{\"color\":\"RED\", \"owner\":\"Max\"}"))
-            .andDo(print())
-            .andExpect(status().isNoContent());
-}
+    void updateAuto_notFound_returnsNotFound() throws Exception {
+            doThrow(new AutoNotFoundException()).when(autosService).updateAuto(anyString(), any(UpdateOwnerRequest.class));
 
+            mockMvc.perform(patch("/api/autos/AABBCC")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("{\"color\":\"RED\", \"owner\":\"Max\"}"))
+                    .andDo(print())
+                    .andExpect(status().isNotFound()); // Expecting 404 Not Found
+        }
 //-Delete:/api/autos/{vin}   Deletes an automobile by its vin/returns 202
 // -Delete:/api/autos/{vin}   Returns 204, vehicle not found
 
