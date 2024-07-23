@@ -99,13 +99,13 @@ public class AutosControllerTests {
 
 
     @Test
-    void getAutosVinTest() throws Exception {
+    void getAutosByVinTest() throws Exception {
         List<Automobiles> automobiles = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             automobiles.add(new Automobiles(1999 + i, "Ford", "Bronco", "ASDD" + i));
         }
         String vin = "ASDD1";
-        when(autosService.getAutosVin(anyString())).thenReturn(new AutoList(automobiles));
+        when(autosService.getAutosByVin(anyString())).thenReturn(new AutoList(automobiles));
         mockMvc.perform(get("/api/autos/{vin}",vin))
                 .andDo(print())
                 .andExpect(status().isOk())

@@ -16,10 +16,10 @@ public class AutosService {
         return null;
     }
 
-    public AutoList getAutosVin(){
+    public AutoList getAutosByVin(){
         return null;
     }
-    public AutoList getAutosVin(String vin){
+    public AutoList getAutosByVin(String vin){
         return null;
     }
 }

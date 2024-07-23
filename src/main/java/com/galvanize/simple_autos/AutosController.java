@@ -33,8 +33,8 @@ public AutosController(AutosService autosService) {
 
 
     @GetMapping("/api/autos/{vin}")
-    public ResponseEntity<AutoList> getAutosVin(@PathVariable(required = false) String vin) {
-        AutoList autoList = autosService.getAutosVin(vin);
+    public ResponseEntity<AutoList> getAutosByVin(@PathVariable(required = false) String vin) {
+        AutoList autoList = autosService.getAutosByVin(vin);
 
         return autoList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(autoList);
     }
