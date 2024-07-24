@@ -31,7 +31,7 @@ public class AutosService {
 
     public Automobiles getAutosByVin(String vin){
 
-          return autoRepository.findByVinContains(vin).orElse(null);
+          return autoRepository.findByVinContains(vin);
     }
 
     public Automobiles addAuto(Automobiles auto) {
@@ -39,8 +39,12 @@ public class AutosService {
      }
 
     public Automobiles updateAuto(String vin, UpdateOwnerRequest update) {
-        return null;
+        Automobiles auto = autoRepository.findByVinContains(vin);
+        auto.setColor(update.getColor());
+        auto.setMake(update.getOwner());
+        return autoRepository.save(auto);
     }
+
 
     public Automobiles deleteAuto(String vin) {
         return null;

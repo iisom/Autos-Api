@@ -54,7 +54,7 @@ class AutosServiceTest {
     void getAutosByVin() {
         Automobiles automobiles = new Automobiles(1999, "Ford", "Bronco", "ASDD");
         automobiles.setVin("ASDA");
-        when(autoRepository.findByVinContains(anyString())).thenReturn(Optional.of(automobiles));
+        when(autoRepository.findByVinContains(anyString())).thenReturn((automobiles));
         Automobiles auto = autosService.getAutosByVin(automobiles.getVin());
         assertNotNull(auto);
         assertThat(auto.getVin()).isEqualTo(automobiles.getVin());
@@ -63,18 +63,28 @@ class AutosServiceTest {
     @Test
     void addAutoValidReturnsAuto() {
         Automobiles automobiles = new Automobiles(1999, "Ford", "Bronco", "ASDD");
-        automobiles.setColor("RED");
         when(autoRepository.save(any(Automobiles.class))).thenReturn(automobiles);
         Automobiles auto = autosService.addAuto(automobiles);
-        assertNotNull(auto);
+        assertThat(auto).isNotNull();
         assertThat(auto.getMake()).isEqualTo("Ford");
     }
 
     @Test
     void updateAuto() {
+        Automobiles auto = new Automobiles(2021, "Toyota", "Camry", "1234567890");
+        auto.setColor("red");
+        auto.setOwner("John Doe");
+        UpdateOwnerRequest update = new UpdateOwnerRequest("red", "John Doe");
+        when(autoRepository.findByVinContains(any())).thenReturn((auto));
+        when(autoRepository.save(any())).thenReturn(auto);
+        Automobiles updatedAuto = autosService.updateAuto("1234567890", update);
+        assertThat(updatedAuto).isNotNull();
+        assertThat(updatedAuto.getColor()).isEqualTo("red");
+        assertThat(updatedAuto.getOwner()).isEqualTo("John Doe");
     }
 
-    @Test
-    void deleteAuto() {
-    }
+
+//    @Test
+//    void deleteAuto() {
+//    }
 }
