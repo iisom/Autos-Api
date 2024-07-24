@@ -39,8 +39,11 @@ public class AutosService {
 
     public Automobiles updateAuto(String vin, UpdateOwnerRequest update) {
         Automobiles auto = autoRepository.findByVinContains(vin);
+        if (auto == null) {
+            throw new AutoNotFoundException("Automobile not found with VIN: " + vin);
+        }
         auto.setColor(update.getColor());
-        auto.setMake(update.getOwner());
+        auto.setOwner(update.getOwner());
         return autoRepository.save(auto);
     }
 
@@ -48,7 +51,7 @@ public class AutosService {
     public void deleteAuto(String vin) {
         Automobiles automobile = autoRepository.findByVinContains(vin);
         if (automobile == null) {
-            throw new AutoNotFoundException();
+            throw new AutoNotFoundException("sdfsdf");
         }
         autoRepository.delete(automobile);
     }
