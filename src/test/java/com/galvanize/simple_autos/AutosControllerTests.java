@@ -103,16 +103,13 @@ public class AutosControllerTests {
 
     @Test
     void getAutosByVinTest() throws Exception {
-        List<Automobiles> automobiles = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            automobiles.add(new Automobiles(1999 + i, "Ford", "Bronco", "ASDD" + i));
-        }
-        String vin = "ASDD1";
-        when(autosService.getAutosByVin(anyString())).thenReturn(new AutoList(automobiles));
+        Automobiles automobiles = new  Automobiles(1999, "Ford", "Bronco", "ASDD");
+              String vin = "ASDD";
+        when(autosService.getAutosByVin(anyString())).thenReturn(automobiles);
         mockMvc.perform(get("/api/autos/{vin}",vin))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.automobiles", hasSize(5)));
+                .andExpect(jsonPath("vin").value(vin));
     }
 
     @Test

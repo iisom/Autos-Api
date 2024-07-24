@@ -32,9 +32,9 @@ public class AutosController {
     }
 
     @GetMapping("/api/autos/{vin}")
-    public ResponseEntity<AutoList> getAutosByVin(@PathVariable(required = false) String vin) {
-        AutoList autoList = autosService.getAutosByVin(vin);
-        return autoList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(autoList);
+    public ResponseEntity<Automobiles> getAutosByVin(@PathVariable String vin) {
+        Automobiles auto = autosService.getAutosByVin(vin);
+        return auto== null ? ResponseEntity.noContent().build() : ResponseEntity.ok(autosService.getAutosByVin(vin));
     }
 
     @PostMapping("/api/autos")
