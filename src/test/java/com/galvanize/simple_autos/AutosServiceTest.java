@@ -8,7 +8,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.Optional;
 
+import static org.apache.logging.log4j.ThreadContext.isEmpty;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -17,6 +19,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
+import static org.springframework.test.web.servlet.result.StatusResultMatchersExtensionsKt.isEqualTo;
 
 @ExtendWith(MockitoExtension.class)
 class AutosServiceTest {
@@ -49,6 +52,13 @@ class AutosServiceTest {
 
     @Test
     void getAutosByVin() {
+//        Automobiles automobiles = new Automobiles(1999, "Ford", "Bronco", "ASDD");
+//        automobiles.setVin("ASDA");
+//        when(autoRepository.findByVinContains(anyString())).thenReturn(Optional.of(automobiles));
+//        AutoList auto = autosService.getAutos(automobiles.getVin());
+//        assertNotNull(auto);
+//        assertFalse(auto.getMake()).isEqualTo("Ford");
+
     }
 
     @Test

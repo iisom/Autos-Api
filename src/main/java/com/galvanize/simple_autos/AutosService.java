@@ -4,6 +4,7 @@ package com.galvanize.simple_autos;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AutosService {
@@ -16,6 +17,7 @@ public class AutosService {
     }
 
     public AutoList getAutos(){
+
         return new AutoList(autoRepository.findAll());
     }
 
@@ -27,7 +29,12 @@ public class AutosService {
         return null;
     }
 
-    public AutoList getAutosByVin(String vin){
+    public Automobiles getAutosByVin(String vin){
+
+        Optional<Automobiles> automobiles= autoRepository.findByVinContains(vin);
+        if(!automobiles.isEmpty()){
+//            return automobiles;
+        }
         return null;
     }
 
