@@ -52,13 +52,12 @@ class AutosServiceTest {
 
     @Test
     void getAutosByVin() {
-//        Automobiles automobiles = new Automobiles(1999, "Ford", "Bronco", "ASDD");
-//        automobiles.setVin("ASDA");
-//        when(autoRepository.findByVinContains(anyString())).thenReturn(Optional.of(automobiles));
-//        AutoList auto = autosService.getAutos(automobiles.getVin());
-//        assertNotNull(auto);
-//        assertFalse(auto.getMake()).isEqualTo("Ford");
-
+        Automobiles automobiles = new Automobiles(1999, "Ford", "Bronco", "ASDD");
+        automobiles.setVin("ASDA");
+        when(autoRepository.findByVinContains(anyString())).thenReturn(Optional.of(automobiles));
+        Automobiles auto = autosService.getAutosByVin(automobiles.getVin());
+        assertNotNull(auto);
+        assertThat(auto.getVin()).isEqualTo(automobiles.getVin());
     }
 
     @Test

@@ -31,11 +31,7 @@ public class AutosService {
 
     public Automobiles getAutosByVin(String vin){
 
-        Optional<Automobiles> automobiles= autoRepository.findByVinContains(vin);
-        if(!automobiles.isEmpty()){
-//            return automobiles;
-        }
-        return null;
+          return autoRepository.findByVinContains(vin).orElse(null);
     }
 
     public Automobiles addAuto(Automobiles auto) {
