@@ -25,14 +25,14 @@ class AutosServiceTest {
     }
 
     @Test
-    void getAutos() {
+    void getAutosNoArgsReturnsList() {
         AutoList autoList = autosService.getAutos();
               assertNotNull(autoList);
     }
 
-
     @Test
-    void testGetAutos() {
+    void getAutosSearch() {
+
     }
 
     @Test
