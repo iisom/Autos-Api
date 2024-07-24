@@ -12,8 +12,7 @@ import java.util.Optional;
 
 import static org.apache.logging.log4j.ThreadContext.isEmpty;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -84,7 +83,11 @@ class AutosServiceTest {
     }
 
 
-//    @Test
-//    void deleteAuto() {
-//    }
+    @Test
+    void deleteAuto() {
+        when(autoRepository.findByVinContains(any())).thenReturn(null);
+        assertThrows(AutoNotFoundException.class, () -> autosService.deleteAuto("1234567890"));
+    }
+
+
 }

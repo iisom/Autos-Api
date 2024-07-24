@@ -4,7 +4,6 @@ package com.galvanize.simple_autos;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AutosService {
@@ -46,7 +45,11 @@ public class AutosService {
     }
 
 
-    public Automobiles deleteAuto(String vin) {
-        return null;
+    public void deleteAuto(String vin) {
+        Automobiles automobile = autoRepository.findByVinContains(vin);
+        if (automobile == null) {
+            throw new AutoNotFoundException();
+        }
+        autoRepository.delete(automobile);
     }
 }
