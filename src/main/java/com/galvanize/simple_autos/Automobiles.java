@@ -1,14 +1,28 @@
 package com.galvanize.simple_autos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.*;
+
+import java.util.Date;
 import java.util.Objects;
 
-public class Automobiles {
 
+@Entity
+@Table(name = "automobiles")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Automobiles {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "model_year")
     private int year;
     private String make;
     private String model;
     private String color;
+    @Column(name = "owner_name")
     private String owner;
+    @JsonFormat(pattern = "MM/dd/yyyy")
+    private Date purchaseDate;
     private String vin;
 
 
