@@ -1,5 +1,6 @@
 package com.galvanize.simple_autos;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,21 +47,26 @@ public class AutosController {
     }
 
     @PatchMapping("/api/autos/{vin}")
-    public ResponseEntity<Automobiles> updatesOwnerAndColor(@PathVariable String vin, @RequestBody UpdateOwnerRequest update) {
-        if ((vin == null)) {
-            return ResponseEntity.badRequest().build();
-        }
-        try {
-            Automobiles updatedAuto = autosService.updateAuto(vin, update);
+    public Automobiles updateAuto(@PathVariable String vin,
+                                 @RequestBody UpdateOwnerRequest update){
+        return autosService.updateAuto(vin, update);
+    }
 
-            if (updatedAuto == null) {
-                return ResponseEntity.noContent().build(); // Return 404 Not Found if automobile with given VIN is not found
-            }
+//    @PatchMapping("/api/autos/{vin}")
+//         public ResponseEntity<Automobiles>  updateAuto(@PathVariable String vin,
+//                @RequestBody UpdateOwnerRequest update) {
+//        try {
+//            autosService.updateAuto(vin, update);
+//            Automobiles updatedAuto = autosService.updateAuto(vin, update);
+//            if (updatedAuto == null) {
+//                return ResponseEntity.noContent().build();
+//            }
+//            return ResponseEntity.ok(updatedAuto); // Return 200 OK with updated automobile object
+//        } catch (AutoNotFoundException e) {
+//            return ResponseEntity.noContent().build();
+//
+//        }}
 
-            return ResponseEntity.ok(updatedAuto); // Return 200 OK with updated automobile object
-        } catch (AutoNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }}
 
         @DeleteMapping("/api/autos/{vin}")
         public ResponseEntity deleteAuto (@PathVariable String vin){
@@ -72,6 +78,15 @@ public class AutosController {
             return ResponseEntity.accepted().build();
         }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void invalidAutoExceptionHandlr(InvalidAutoException e){
+    }
 
-}
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void autoNotFoundExceptionHandlr(AutoNotFoundException e){
+    }
+
+    }
 

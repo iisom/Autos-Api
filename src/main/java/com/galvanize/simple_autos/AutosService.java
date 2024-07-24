@@ -22,10 +22,10 @@ public class AutosService {
 
     public AutoList getAutos(String color, String make){
         List<Automobiles> automobiles= autoRepository.findByColorContainsAndMakeContains(color,make);
-        if(!automobiles.isEmpty()){
+
             return new AutoList(automobiles);
-        }
-        return null;
+
+
     }
 
     public Automobiles getAutosByVin(String vin){
@@ -40,7 +40,7 @@ public class AutosService {
     public Automobiles updateAuto(String vin, UpdateOwnerRequest update) {
         Automobiles auto = autoRepository.findByVinContains(vin);
         auto.setColor(update.getColor());
-        auto.setMake(update.getOwner());
+        auto.setOwner(update.getOwner());
         return autoRepository.save(auto);
     }
 
@@ -48,7 +48,7 @@ public class AutosService {
     public void deleteAuto(String vin) {
         Automobiles automobile = autoRepository.findByVinContains(vin);
         if (automobile == null) {
-            throw new AutoNotFoundException();
+            throw new AutoNotFoundException("Auto with vin "+vin+" not found");
         }
         autoRepository.delete(automobile);
     }
