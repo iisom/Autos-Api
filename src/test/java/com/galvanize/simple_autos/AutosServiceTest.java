@@ -47,7 +47,7 @@ class AutosServiceTest {
     void getAutosByVin() {
         Automobiles automobiles = new Automobiles(1999, "Ford", "Bronco", "ASDD");
         automobiles.setVin("ASDA");
-        when(autoRepository.findByVinContains(anyString())).thenReturn((automobiles));
+        when(autoRepository.findByVin(anyString())).thenReturn((automobiles));
         Automobiles auto = autosService.getAutosByVin(automobiles.getVin());
         assertNotNull(auto);
         assertThat(auto.getVin()).isEqualTo(automobiles.getVin());
@@ -68,7 +68,7 @@ class AutosServiceTest {
         auto.setColor("red");
         auto.setOwner("John Doe");
         UpdateOwnerRequest update = new UpdateOwnerRequest("red", "John Doe");
-        when(autoRepository.findByVinContains(any())).thenReturn((auto));
+        when(autoRepository.findByVin(any())).thenReturn((auto));
         when(autoRepository.save(any())).thenReturn(auto);
         Automobiles updatedAuto = autosService.updateAuto("1234567890", update);
         assertThat(updatedAuto).isNotNull();
@@ -79,7 +79,7 @@ class AutosServiceTest {
 
     @Test
     void deleteAuto() {
-        when(autoRepository.findByVinContains(any())).thenReturn(null);
+        when(autoRepository.findByVin(any())).thenReturn(null);
         assertThrows(AutoNotFoundException.class, () -> autosService.deleteAuto("1234567890"));
     }
 

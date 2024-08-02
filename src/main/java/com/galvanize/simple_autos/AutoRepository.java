@@ -11,5 +11,5 @@ public interface AutoRepository extends JpaRepository<Automobiles, Long> {
 
     List<Automobiles> findByColorContainsAndMakeContains(String color, String make);
 
-    Automobiles findByVinContains(String vin);
+    Automobiles findByVin(String vin);
 }

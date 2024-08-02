@@ -10,6 +10,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin("*")
 public class AutosController {
 
     private List<AutoList> autoList;
@@ -31,6 +32,7 @@ public class AutosController {
         }
         return autoList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(autoList);
     }
+
 
     @GetMapping("/api/autos/{vin}")
     public ResponseEntity<Automobiles> getAutosByVin(@PathVariable String vin) {
