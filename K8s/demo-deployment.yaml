@@ -22,7 +22,7 @@ spec:
           env:
             - name: DB_HOST
               valueFrom:
-                configMapKeyRef:
+               configMapKeyRef:
                   name: simple-autos-image # name of the ConfigMap
                   key: database-host # key in the ConfigMap
             - name: DB_PORT
