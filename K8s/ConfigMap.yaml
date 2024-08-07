@@ -3,9 +3,9 @@ kind: ConfigMap
 metadata:
   name: simple-autos-image
 data:
-  database-host: postgres.galvanizelabs.net
+  database-host: "postgres.galvanizelabs.net"
   database-port: "5432"
-  database-name: automobiles
+  database-name: "inga_temp"
 #  apiVersion: v1
 #  kind: Secret
 #  metadata:
