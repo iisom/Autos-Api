@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-autos-image
+  labels:
+    app: simple-autos-image
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: simple-autos-image
+  template:
+    metadata:
+      labels:
+        app: simple-autos-image
+    spec:
+      containers:
+        - name: simple-autos-image
+          image: iisom/simple-autos-image
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: simple-autos-image # name of the ConfigMap
+                  key: database-host # key in the ConfigMap
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: simple-autos-image
+                  key: database-port
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: simple-autos-image
+                  key: database-name
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: simple-autos-image # name of the Secret
+                  key: database-user # key in the Secret
+            - name: DB_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: simple-autos-image
+                  key: database-password
