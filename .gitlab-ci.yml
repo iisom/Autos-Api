@@ -1,21 +1,48 @@
-image: eclipse-temurin:17-alpine
+###without aws#######
+#image: eclipse-temurin:17-alpine
+#
+#
+#stages:
+#  - build
+#  - test
+#
+#build:
+#  stage: build
+#  script:
+#    - ./gradlew assemble
+#  artifacts:
+#    paths:
+#      - build/libs/*.jar
+#test:
+#  stage: test
+#  script:
+#    ./gradlew test
+#  artifacts:
+#    paths:
+#      - build/test-results/test/TEST*.xml
+######with aws###########
 
 
-stages:
-  - build
-  - test
-  
-build:
+before_script:
+  - GRADLE_USER_HOME="$(pwd)/.gradle"
+  - export GRADLE_USER_HOME
+
+build-job:
+  image: eclipse-temurin:17
   stage: build
   script:
-    - ./gradlew assemble
+    - ./gradlew build
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build/**
+      - .gradle
   artifacts:
+    untracked: false
+    when: on_success
+    access: all
+    expire_in: 30 days
     paths:
       - build/libs/*.jar
-test:
-  stage: test
-  script:
-    ./gradlew test
-  artifacts:
-    paths:
-      - build/test-results/test/TEST*.xml
+
