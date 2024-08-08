@@ -46,3 +46,21 @@ build-job:
     paths:
       - build/libs/*.jar
 
+test-job:
+  image: eclipse-temurin:17
+  stage: test
+  script:
+    - ./gradlew test
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build/**
+      - .gradle
+  artifacts:
+    untracked: false
+    when: on_failure
+    access: all
+    expire_in: 30 days
+    paths:
+      - build/reports/tests
