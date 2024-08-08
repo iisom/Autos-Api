@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: simple-autos-image
+  name: ii-simple-autos
 data:
   database-host: "postgres.galvanizelabs.net"
   database-port: "5432"

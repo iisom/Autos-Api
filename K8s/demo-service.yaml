@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: demo-service
+  name: ii-simple-autos
   labels:
-    app: simple-autos-image
+    app: ii-simple-autos
 spec:
   type: LoadBalancer
   ports:
@@ -13,6 +13,6 @@ spec:
       targetPort: 8080
 #      //container
   selector:
-    app: simple-autos-image
+    app: ii-simple-autos
 
 

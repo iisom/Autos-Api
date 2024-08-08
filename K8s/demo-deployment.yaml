@@ -1,47 +1,50 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simple-autos-image
+  name: ii-simple-autos
   labels:
-    app: simple-autos-image
+    app: ii-simple-autos
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: simple-autos-image
+      app: ii-simple-autos
   template:
     metadata:
       labels:
-        app: simple-autos-image
+        app: ii-simple-autos
     spec:
       containers:
-        - name: simple-autos-image
-          image: iisom/simple-autos-image
+        - name: ii-simple-autos
+          image: registry.gitlab.galvanize.com/cohorts/ent/sf/ase-tier3-06-24-2024/student-work/inga/autos-api:manual
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
             - name: DB_HOST
               valueFrom:
                configMapKeyRef:
-                  name: simple-autos-image # name of the ConfigMap
+                  name: ii-simple-autos # name of the ConfigMap
                   key: database-host # key in the ConfigMap
             - name: DB_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: simple-autos-image
+                  name: ii-simple-autos
                   key: database-port
             - name: DB_NAME
               valueFrom:
                 configMapKeyRef:
-                  name: simple-autos-image
+                  name: ii-simple-autos
                   key: database-name
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: simple-autos-image # name of the Secret
+                  name: ii-simple-autos # name of the Secret
                   key: database-user # key in the Secret
             - name: DB_PWD
               valueFrom:
                 secretKeyRef:
-                  name: simple-autos-image
+                  name: ii-simple-autos
                   key: database-password
+      imagePullSecrets:
+        - name: ii-simple-autos-token
