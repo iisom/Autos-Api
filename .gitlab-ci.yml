@@ -77,13 +77,10 @@ docker:
   image:
     name: gcr.io/kaniko-project/executor:v1.15.0-debug
     entrypoint: [""]
-#    // "" enter at the root
   script:
-      -- /kaniko/executor
+      --/kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
-#      location of the registry in git
-#      everytime the pipeline runs it gets a new id
       --destination "${CI_REGISTRY_IMAGE}:$CI_PIPELINE_IID"
       --destination "${CI_REGISTRY_IMAGE}:latest"
       --cleanup
