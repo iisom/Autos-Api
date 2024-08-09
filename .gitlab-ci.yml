@@ -79,7 +79,7 @@ docker:
     entrypoint: [""]
 #    // "" enter at the root
   script:
-    - /kaniko/executor
+      -- /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
 #      location of the registry in git
