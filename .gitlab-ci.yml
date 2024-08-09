@@ -77,10 +77,13 @@ docker:
   image:
     name: gcr.io/kaniko-project/executor:v1.15.0-debug
     entrypoint: [""]
+#    // "" enter at the root
   script:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+#      location of the registry in git
+#      everytime the pipeline runs it gets a new id
       --destination "${CI_REGISTRY_IMAGE}:$CI_PIPELINE_IID"
       --destination "${CI_REGISTRY_IMAGE}:latest"
       --cleanup
@@ -101,11 +104,11 @@ deploy:
       - master
   before_script:
     - export IMAGE="$CI_REGISTRY_IMAGE":"$CI_PIPELINE_IID"
-    - aws configure set aws_access_key_id "$AKIAYSIKQNJCCPXO3TWQ"
-    - aws configure set aws_secret_access_key "$5Tk3Gyw6HkhYut3P6yXGy9WNwE1tlRVGmvnAvOIa"
-    - aws configure set region $us-west-2
+    - aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
+    - aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
+    - aws configure set region $AWS_DEFAULT_REGION
     - aws configure set output json
-    - aws eks update-kubeconfig --name "$sf-ase-t3-june-2024"
+    - aws eks update-kubeconfig --name "$CLUSTER_NAME"
     - aws sts get-caller-identity
   script:
     - kubectl apply -f k8-config/configmap.yaml
