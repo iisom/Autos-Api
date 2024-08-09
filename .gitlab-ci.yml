@@ -21,7 +21,10 @@
 #    paths:
 #      - build/test-results/test/TEST*.xml
 ######with aws###########
-
+stages:
+  - build
+  - test
+  - docker
 
 before_script:
   - GRADLE_USER_HOME="$(pwd)/.gradle"
@@ -31,7 +34,7 @@ build-job:
   image: eclipse-temurin:17
   stage: build
   script:
-    - ./gradlew build
+    - ./gradlew assemble
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
@@ -64,3 +67,25 @@ test-job:
     expire_in: 30 days
     paths:
       - build/reports/tests
+
+docker:
+  stage: docker
+  needs:
+    - build-job
+    - test-job
+  image:
+    name: gcr.io/kaniko-project/executor:v1.15.0-debug
+    entrypoint: [""]
+  script:
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}:$CI_PIPELINE_IID"
+      --destination "${CI_REGISTRY_IMAGE}:latest"
+      --cleanup
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build/**
+      - .gradle
