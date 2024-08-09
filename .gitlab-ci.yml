@@ -108,7 +108,7 @@ deploy:
     - aws eks update-kubeconfig --name "$CLUSTER_NAME"
     - aws sts get-caller-identity
   script:
-    - kubectl apply -f k8-config/configmap.yaml
-    - kubectl apply -f k8-config/secret.yaml
-    - kubectl apply -f k8-config/service.yaml
-    - envsubst < k8s-deploy.yaml | kubectl apply -f -
+    - kubectl apply -f K8s/ConfigMap.yaml
+    - kubectl apply -f K8s/secret.yaml
+    - kubectl apply -f K8s/demo-service.yaml
+    - envsubst < K8s/demo-deployment.yaml | kubectl apply -f -
