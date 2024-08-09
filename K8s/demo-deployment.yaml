@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ii-simple-autos
+  namespace: default
   labels:
     app: ii-simple-autos
 spec:

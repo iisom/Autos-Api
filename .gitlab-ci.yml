@@ -25,16 +25,17 @@ stages:
   - build
   - test
   - docker
+  - deploy
 
 before_script:
   - GRADLE_USER_HOME="$(pwd)/.gradle"
   - export GRADLE_USER_HOME
 
 build-job:
-  image: eclipse-temurin:17
+  image: eclipse-temurin:17-alpine
   stage: build
   script:
-    - ./gradlew assemble
+    - ./gradlew build
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
@@ -50,7 +51,7 @@ build-job:
       - build/libs/*.jar
 
 test-job:
-  image: eclipse-temurin:17
+  image: eclipse-temurin:17-alpine
   stage: test
   script:
     - ./gradlew test
@@ -89,3 +90,25 @@ docker:
     paths:
       - build/**
       - .gradle
+
+deploy:
+  stage: deploy
+  image: $BASE_AWS_EKS_IMAGE
+  when: manual # Running this job requires manual intervention
+  only:
+    refs: # We only want to deploy after we build the image
+      - main
+      - master
+  before_script:
+    - export IMAGE="$CI_REGISTRY_IMAGE":"$CI_PIPELINE_IID"
+    - aws configure set aws_access_key_id "$AKIAYSIKQNJCCPXO3TWQ"
+    - aws configure set aws_secret_access_key "$5Tk3Gyw6HkhYut3P6yXGy9WNwE1tlRVGmvnAvOIa"
+    - aws configure set region $us-west-2
+    - aws configure set output json
+    - aws eks update-kubeconfig --name "$sf-ase-t3-june-2024"
+    - aws sts get-caller-identity
+  script:
+    - kubectl apply -f k8-config/configmap.yaml
+    - kubectl apply -f k8-config/secret.yaml
+    - kubectl apply -f k8-config/service.yaml
+    - envsubst < k8s-deploy.yaml | kubectl apply -f -
