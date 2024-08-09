@@ -96,7 +96,7 @@ deploy:
   image: $BASE_AWS_EKS_IMAGE
   when: manual # Running this job requires manual intervention
   only:
-    refs: # We only want to deploy after we build the image
+    refs: # We only want to deploy after we build the image/ deploy job will only run in main branch
       - main
       - master
   before_script:
